@@ -2,7 +2,7 @@
   "name": "leaflet-canvas-ship-marker",
   "version": "1.0.0",
   "description": "leaflet canvas 基础 生成传播图标 专用于航海",
-  "main": "dist/leaflet-canvas-ship-marker.es.js",
+  "main": "leaflet-canvas-ship-marker.umd.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",

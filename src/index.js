@@ -1,5 +1,5 @@
-import 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import '@/Style/index.scss'
+// import 'leaflet'
+// import 'leaflet/dist/leaflet.css'
+// import '@/Style/index.scss'
 import './L.CustomCanvas'
 import './L.CanvasShip'
