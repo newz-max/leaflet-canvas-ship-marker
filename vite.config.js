@@ -5,7 +5,10 @@ export default defineConfig({
   build:{
     lib : {
       entry : path.resolve(__dirname , 'src/index.js'),
-      name : 'leaflet-canvas-ship-marker'
+      name : 'leaflet-canvas-ship-marker',
+      rollupOptions : {
+        external : ['html']
+      }
     }
   },
   
