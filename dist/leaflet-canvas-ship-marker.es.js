@@ -4,80 +4,44 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-L.Canvas.CustomCanvas = L.Layer.extend({
-  initialize(options = {}) {
-    L.setOptions(this, options);
-  },
-  onAdd(map) {
-    this.tiles = {};
-    this._container = map.getContainer();
-    this._map = map;
-    const canvas = this._initCanvas();
-    const pane = this.options.pane ? map.getPanes()[this.options.pane] : map._panes.overflowPane;
-    pane.appendChild(canvas);
-    map.on(this.getEvents(), this);
+(function(t) {
+  typeof define == "function" && define.amd ? define(t) : t();
+})(function() {
+  L.Canvas.CustomCanvas = L.Layer.extend({ initialize(t = {}) {
+    L.setOptions(this, t);
+  }, onAdd(t) {
+    this.tiles = {}, this._container = t.getContainer(), this._map = t;
+    const e = this._initCanvas();
+    (this.options.pane ? t.getPanes()[this.options.pane] : t._panes.overflowPane).appendChild(e), t.on(this.getEvents(), this), this._update();
+  }, onRemove() {
+    const { _map: t, _ctx: e, _canvas: n } = this;
+    n.remove();
+  }, _initCanvas() {
+    const t = L.DomUtil.create("canvas", "leaflet-ship"), e = t.getContext("2d");
+    t.style.zIndex = this.options.zIndex || "500", this._canvas = t, this._ctx = e, this._onLayerDidResize();
+    var n = this._map.options.zoomAnimation && L.Browser.any3d;
+    return L.DomUtil.addClass(this._canvas, "leaflet-zoom-" + (n ? "animated" : "hide")), t;
+  }, _onAnimZoom(t) {
+    var e = this._map.getZoomScale(t.zoom), n = this._map._latLngBoundsToNewLayerBounds(this._map.getBounds(), t.zoom, t.center).min;
+    L.Browser.any3d ? L.DomUtil.setTransform(this._canvas, n, e) : L.DomUtil.setPosition(this._canvas, n);
+  }, _onLayerDidResize: function() {
+    const { x: t, y: e } = this._map.getSize(), n = 2;
+    this._canvas.style.width = `${t}px`, this._canvas.style.height = `${e}px`, this._canvas.width = t * n, this._canvas.height = e * n;
+  }, _onLayerDidMove: function() {
     this._update();
-  },
-  onRemove() {
-    const { _map: map, _ctx: ctx, _canvas: canvas } = this;
-    canvas.remove();
-  },
-  _initCanvas() {
-    const canvas = L.DomUtil.create("canvas", "leaflet-ship");
-    const ctx = canvas.getContext("2d");
-    canvas.style.zIndex = this.options.zIndex || "500";
-    this._canvas = canvas;
-    this._ctx = ctx;
-    this._onLayerDidResize();
-    var animated = this._map.options.zoomAnimation && L.Browser.any3d;
-    L.DomUtil.addClass(this._canvas, "leaflet-zoom-" + (animated ? "animated" : "hide"));
-    return canvas;
-  },
-  _onAnimZoom(ev) {
-    var scale = this._map.getZoomScale(ev.zoom);
-    var offset = this._map._latLngBoundsToNewLayerBounds(this._map.getBounds(), ev.zoom, ev.center).min;
-    if (L.Browser.any3d) {
-      L.DomUtil.setTransform(this._canvas, offset, scale);
-    } else {
-      L.DomUtil.setPosition(this._canvas, offset);
-    }
-  },
-  _onLayerDidResize: function() {
-    const { x, y } = this._map.getSize();
-    const pixelRatio = 2;
-    this._canvas.style.width = `${x}px`;
-    this._canvas.style.height = `${y}px`;
-    this._canvas.width = x * pixelRatio;
-    this._canvas.height = y * pixelRatio;
-  },
-  _onLayerDidMove: function() {
-    this._update();
-  },
-  getEvents() {
-    var events = {
-      resize: this._onLayerDidResize,
-      moveend: this._onLayerDidMove
-    };
-    if (this._zoomAnimated) {
-      events.zoomanim = this._onAnimZoom;
-    }
-    return events;
-  },
-  _update() {
-    const { _ctx: ctx, _map: map, _canvas: canvas } = this;
-    const topLeft = map.containerPointToLayerPoint([0, 0]);
-    L.DomUtil.setPosition(canvas, topLeft);
-    this.clearCavnas(ctx, canvas);
-    this.drawLayer();
-  },
-  drawLayer: function() {
+  }, getEvents() {
+    var t = { resize: this._onLayerDidResize, moveend: this._onLayerDidMove };
+    return this._zoomAnimated && (t.zoomanim = this._onAnimZoom), t;
+  }, _update() {
+    const { _ctx: t, _map: e, _canvas: n } = this, s = e.containerPointToLayerPoint([0, 0]);
+    L.DomUtil.setPosition(n, s), this.clearCavnas(t, n), this.drawLayer();
+  }, drawLayer: function() {
     console.warn("\u5982\u81EA\u5B9A\u4E49\u65B0\u7684\u7EE7\u627F\u7C7B\uFF0C\u8BF7\u5B9E\u73B0\u6B64\u65B9\u6CD5");
-  },
-  clearCavnas(ctx, canvas) {
-    ctx.restore();
-    const { width, height } = canvas;
-    ctx.clearRect(0, 0, width, height);
-  }
+  }, clearCavnas(t, e) {
+    t.restore();
+    const { width: n, height: s } = e;
+    t.clearRect(0, 0, n, s);
+  } });
 });
 class CanvasShip extends L.Canvas.CustomCanvas {
   constructor() {
