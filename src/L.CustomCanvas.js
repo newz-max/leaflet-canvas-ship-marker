@@ -39,7 +39,7 @@ L.Canvas.CustomCanvas = L.Layer.extend({
     const canvas = L.DomUtil.create('canvas', 'leaflet-ship')
     const ctx = canvas.getContext('2d')
 
-    canvas.style.zIndex = '500'
+    canvas.style.zIndex = this.options.zIndex || '500'
 
     this._canvas = canvas
     this._ctx = ctx
