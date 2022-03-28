@@ -26,6 +26,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         deg: item.deg || 0,
         type: item.type,
         color: item.color,
+        sourceObj: item,
       };
 
       result.latlng.x *= 2;
@@ -153,7 +154,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       if (item.type === "storage") {
         if (point !== undefined) {
           if (inRectFn(ctxItem)) {
-            res = point;
+            res = [point, item];
           }
         }
         return;
@@ -162,7 +163,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       ctxItem = shapes.end(item);
       if (point !== undefined) {
         if (inRectFn(ctxItem)) {
-          res = point;
+          res = [point, item];
         }
       }
     });
@@ -189,7 +190,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
 
     const res = this.drawShip(_ctxPoints, { x, y });
     if (res !== null) {
-      return callBack(res);
+      return callBack(...res);
     }
   }
 
@@ -237,11 +238,11 @@ class CanvasShip extends L.Canvas.CustomCanvas {
 
 /**
  * 船位、 航线、 航迹、 时间点 Canvas 绘制
- * @params {Object} options 初始化选项
+ * @param {Object} options 初始化选项
  * @param {Array} options.latlngs 经纬度数组 [{lat : 纬度, lng:经度, deg : 旋转角度 , color : 图标颜色}]
  * @param {Number | String} options.latlngs.deg 旋转角度 0-360
  * @param {String} options.latlngs.type base 基础形状 running 航行中 turn 转向 lost 信号延迟 > 6h storage 浮式存储
- * @param {Object} events 要注册的事件 example : {click( point ){ xxx }}； point 代表鼠标坐标在 图标内时的 鼠标坐标 * 2
+ * @param {Object} options.events 要注册的事件 example : {click( point ){ xxx }}； point 代表鼠标坐标在 图标内时的 鼠标坐标 * 2
  * @return 创建的实例对象，将会是一个单例当重复创建时只会覆盖参数而不创建新的实例(暂未实现)
  */
 L.canvas.CanvasShip = (options) => {
