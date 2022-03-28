@@ -23,8 +23,8 @@ const ship = L.canvas
     latlngs: json,
     zIndex: "0",
     events: {
-      click(point) {
-        console.log(point, "click");
+      click(point, source) {
+        console.log(point, source, "click");
       },
 
       mousemove(point) {
