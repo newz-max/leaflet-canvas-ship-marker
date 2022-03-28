@@ -3,11 +3,22 @@ import path from "path";
 
 export default defineConfig({
   build:{
+    minify : 'terser',
     lib : {
       entry : path.resolve(__dirname , 'src/index.js'),
       name : 'leaflet-canvas-ship-marker',
       rollupOptions : {
-        external : ['html']
+        external : ['html'],
+      },
+    },
+    
+    drop: {
+      console : true
+    },
+
+    terserOptions : {
+      compress : {
+        drop_console : true
       }
     }
   },
@@ -15,13 +26,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "/src"),
-    },
-  },
-  
-  terserOptions: {
-    compress: {
-      drop_console: true,
-      drop_debugger: true,
     },
   },
 
