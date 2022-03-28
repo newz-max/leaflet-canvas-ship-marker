@@ -1,5 +1,22 @@
 var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
@@ -53,6 +70,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       options: { latlngs },
       _map: map
     } = this;
+    this._ctxs = [];
     const res = latlngs.map((item) => {
       const latlng = {};
       if (!item.latlng) {
@@ -67,7 +85,18 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       };
       return result;
     });
-    this.drawShip(res);
+    const _ctxPoints = res.map((item) => {
+      const res2 = __spreadProps(__spreadValues({}, item), {
+        latlng: {
+          x: item.latlng.x * 2,
+          y: item.latlng.y * 2
+        }
+      });
+      return res2;
+    });
+    this._ctxPoints = _ctxPoints;
+    this.drawShip(_ctxPoints);
+    this._initEvents();
   }
   drawShip(latlngs) {
     const { _ctx: ctx } = this;
@@ -82,8 +111,6 @@ class CanvasShip extends L.Canvas.CustomCanvas {
     const shapes = {
       base(item, index) {
         let { x, y } = item.latlng;
-        x = x * 2;
-        y = y * 2;
         rotateShip(ctx, x, y, item.deg);
         ctx.beginPath();
         ctx.lineWidth = 2;
@@ -110,8 +137,6 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       },
       storage(item) {
         let { x, y } = item.latlng;
-        x = x * 2;
-        y = y * 2;
         ctx.beginPath();
         ctx.arc(x, y, 18, 0, 2 * Math.PI);
         ctx.stroke();
@@ -119,19 +144,42 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         ctx.arc(x, y, 11, 0, 2 * Math.PI);
         ctx.stroke();
         item.color = true;
+        return ctx;
       },
       end(item) {
         ctx.fillStyle = item.color || defaultColor;
         ctx.fill();
         ctx.stroke();
+        return ctx;
       }
     };
     latlngs.forEach((item) => {
-      console.log(item, "item");
       shapes[item.type](item);
-      if (item.type === "storage")
+      if (item.type === "storage") {
+        const ctxItem2 = shapes[item.type](item);
+        this._ctxs.push(ctxItem2);
         return;
-      shapes.end(item);
+      }
+      const ctxItem = shapes.end(item);
+      this._ctxs.push(ctxItem);
+    });
+  }
+  canvasDomEvent(callBack) {
+    const { _ctxs, _ctxPoints } = this;
+    console.log(_ctxPoints, "_ctxPoints");
+    return callBack();
+  }
+  _initEvents() {
+    const { _ctxs, _ctx: ctx, options: { events = {} }, _canvas } = this;
+    const eventItems = Object.entries(events);
+    if (eventItems.length === 0)
+      ;
+    eventItems.forEach((item) => {
+      const eventKey = item[0];
+      const eventHandle = item[1];
+      console.log(eventKey, "eventKey");
+      _canvas.removeEventListener(eventKey, this.canvasDomEvent);
+      _canvas.addEventListener(eventKey, this.canvasDomEvent(eventHandle));
     });
   }
 }
