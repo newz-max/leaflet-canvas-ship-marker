@@ -62,7 +62,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       const result = {
         latlng: map.latLngToContainerPoint(latlng),
         deg: item.deg || 0,
-        type: item.type
+        type: item.type,
+        color: item.color
       };
       return result;
     });
@@ -126,6 +127,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       }
     };
     latlngs.forEach((item) => {
+      console.log(item, "item");
       shapes[item.type](item);
       if (item.type === "storage")
         return;
