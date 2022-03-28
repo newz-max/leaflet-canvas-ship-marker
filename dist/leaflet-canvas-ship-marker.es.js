@@ -5477,7 +5477,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         latlng: map.latLngToContainerPoint(latlng),
         deg: item.deg || 0,
         type: item.type,
-        color: item.color
+        color: item.color,
+        sourceObj: item
       };
       result.latlng.x *= 2;
       result.latlng.y *= 2;
@@ -5553,7 +5554,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       if (item.type === "storage") {
         if (point !== void 0) {
           if (inRectFn(ctxItem)) {
-            res = point;
+            res = [point, item];
           }
         }
         return;
@@ -5561,7 +5562,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       ctxItem = shapes.end(item);
       if (point !== void 0) {
         if (inRectFn(ctxItem)) {
-          res = point;
+          res = [point, item];
         }
       }
     });
@@ -5569,7 +5570,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
   }
   canvasDomEvent(callBack, event) {
     const { _ctxPoints, _canvas } = this;
-    let { x, y } = event;
+    let { offsetX: x, offsetY: y } = event;
     x *= 2;
     y *= 2;
     const w = _canvas.width;
@@ -5578,7 +5579,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
     _canvas.height = h;
     const res = this.drawShip(_ctxPoints, { x, y });
     if (res !== null) {
-      return callBack(res);
+      return callBack(...res);
     }
   }
   _initEvents() {
