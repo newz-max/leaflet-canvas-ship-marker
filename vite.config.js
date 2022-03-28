@@ -7,6 +7,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "/src"),
     },
   },
+  
+  terserOptions: {
+    compress: {
+      drop_console: true,
+      drop_debugger: true,
+    },
+  },
 
   css: {
     /* CSS 预处理器 */
