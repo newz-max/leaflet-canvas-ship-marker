@@ -179,7 +179,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
   canvasDomEvent(callBack, event) {
     const { _ctxPoints, _canvas } = this;
 
-    let { x, y } = event;
+    let { offsetX: x, offsetY: y } = event;
     x *= 2;
     y *= 2;
 
