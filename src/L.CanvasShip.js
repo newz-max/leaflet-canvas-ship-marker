@@ -10,6 +10,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       _map: map,
     } = this;
 
+    this._ctxs = []
+
     // 数据处理部分（临时代码）
     const res = latlngs.map((item) => {
       const latlng = {};
@@ -26,7 +28,22 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       return result;
     });
 
-    this.drawShip(res);
+    // 绘制图标时用到的 2倍坐标
+    const _ctxPoints = res.map( item => {
+      const res = {
+        ...item,
+        latlng : {
+          x : item.latlng.x * 2,
+          y : item.latlng.y * 2
+        }
+      }
+      return res
+    })
+
+    this._ctxPoints = _ctxPoints
+
+    this.drawShip(_ctxPoints);
+    this._initEvents()
   }
 
   /**
@@ -59,8 +76,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       // 基础形状
       base(item, index) {
         let { x, y } = item.latlng;
-        x = x * 2;
-        y = y * 2;
+        // x = x * 2;
+        // y = y * 2;
 
         rotateShip(ctx, x, y, item.deg);
 
@@ -102,8 +119,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       storage(item){
         let { x, y } = item.latlng;
 
-        x = x * 2;
-        y = y * 2;
+        // x = x * 2;
+        // y = y * 2;
 
         ctx.beginPath()
         ctx.arc(x,y,18,0,2*Math.PI)
@@ -113,24 +130,65 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         ctx.stroke()
         // ctx.strokeStyle="blue";//将线条颜色设置为蓝色
         item.color = true
+          
+        return ctx
       },
 
       end(item) {
         ctx.fillStyle = item.color || defaultColor;
         ctx.fill(); // 以填充方式绘制 默认黑色
         ctx.stroke(); // 闭合形状并且以填充方式绘制出来
+
+        return ctx
       },
     };
 
     latlngs.forEach((item) => {
-      console.log(item, 'item');
       shapes[item.type](item);
 
-      if(item.type === 'storage') return
+      if(item.type === 'storage') {
+        const ctxItem = shapes[item.type](item);
+        this._ctxs.push(ctxItem)
+        return
+      }
 
-      shapes.end(item);
+      const ctxItem = shapes.end(item)
+      this._ctxs.push(ctxItem);
     });
+    
   }
+
+  /**
+  * canvas 元素事件触发默认函数
+  */
+ canvasDomEvent(callBack){
+   const { _ctxs ,_ctxPoints } = this
+   console.log(_ctxPoints, '_ctxPoints');
+  return callBack()
+ }
+
+  /**
+  * 初始化元素事件
+  */
+ _initEvents(){
+   const { _ctxs , _ctx:ctx , options:{events = {}} , _canvas} = this
+
+   const eventItems = Object.entries(events)
+   
+   if( eventItems.length === 0 ){
+    //  return 
+   }
+
+
+   eventItems.forEach( item => {
+     const eventKey = item[0]
+     const eventHandle = item[1]
+
+     console.log(eventKey, 'eventKey');
+     _canvas.removeEventListener(eventKey , this.canvasDomEvent)
+     _canvas.addEventListener(eventKey , this.canvasDomEvent(eventHandle))
+   })
+ }
 }
 
 /**
