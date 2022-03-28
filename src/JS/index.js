@@ -14,7 +14,8 @@ const points = json.points.split(',').map(item => item.split(' '))
 const point = points[0]
 
 const ship = L.canvas.CanvasShip({
-    latlngs : [{ lat : point[0] , lng : point[1] , deg : 45 , type : 'storage'}],
+    latlngs : [{ lat : point[0] , lng : point[1] , deg : 45 , type : 'base' , color : '#ffffff'}],
+    zIndex : '0'
 }).addTo(map)
 
 map.panTo(point)

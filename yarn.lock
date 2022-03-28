@@ -317,6 +317,11 @@ js-tokens@^4.0.0:
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
+leaflet-canvas-custom-class@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.npmjs.org/leaflet-canvas-custom-class/-/leaflet-canvas-custom-class-0.0.0.tgz#e643770310b588c2c78837edaa500e1aecfd324c"
+  integrity sha512-XlWosPE2vpjnEihxFSMUIFWHd0JRPP1cPu0nguoUxDxkPQf/pe8g5OWgoX2wjm1lF7SIFh01ry66d6TceRFIoA==
+
 leaflet@^1.7.1:
   version "1.7.1"
   resolved "https://registry.npmjs.org/leaflet/-/leaflet-1.7.1.tgz#10d684916edfe1bf41d688a3b97127c0322a2a19"

@@ -21,6 +21,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         latlng: map.latLngToContainerPoint(latlng),
         deg: item.deg || 0,
         type: item.type,
+        color : item.color
       };
       return result;
     });
@@ -122,6 +123,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
     };
 
     latlngs.forEach((item) => {
+      console.log(item, 'item');
       shapes[item.type](item);
 
       if(item.type === 'storage') return
@@ -134,7 +136,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
 /**
  * 船位、 航线、 航迹、 时间点 Canvas 绘制
  * @params {Object} options 初始化选项
- * @param {Array} options.latlngs 经纬度数组 [{lat : 纬度, lng:经度, deg : 旋转角度}]
+ * @param {Array} options.latlngs 经纬度数组 [{lat : 纬度, lng:经度, deg : 旋转角度 , color : 图标颜色}]
  * @param {Number | String} options.latlngs.deg 旋转角度 0-360
  * @param {String} options.latlngs.type base 基础形状 running 航行中 turn 转向 lost 信号延迟 > 6h storage 浮式存储
  * @return 创建的实例对象，将会是一个单例当重复创建时只会覆盖参数而不创建新的实例(暂未实现)
