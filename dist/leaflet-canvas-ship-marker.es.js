@@ -5607,7 +5607,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
     });
   }
 }
-L.canvas.CanvasShip = (options) => {
+function createCanvasShip(options) {
   const result = new CanvasShip(options);
   return result;
-};
+}
+export { createCanvasShip };

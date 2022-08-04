@@ -3,4 +3,4 @@
 // import '@/Style/index.scss'
 // import './L.CustomCanvas'
 import 'leaflet-canvas-custom-class'
-import './L.CanvasShip'
+export * from './L.CanvasShip'
