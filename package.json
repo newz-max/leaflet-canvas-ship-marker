@@ -1,6 +1,6 @@
 {
   "name": "leaflet-canvas-ship-marker",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "leaflet canvas 基础 生成传播图标 专用于航海",
   "main": "dist/leaflet-canvas-ship-marker.es.js",
   "scripts": {
