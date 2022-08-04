@@ -88,6 +88,9 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         ctx.lineTo(-7, 20);
         ctx.lineTo(-7, -10);
         ctx.lineTo(0, -20);
+
+        ctx.fillStyle = item.color || defaultColor;
+        ctx.fill(); // 以填充方式绘制 默认黑色
         // index === 0 && ctx.rotate(0)
       },
 
@@ -133,8 +136,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
       },
 
       end(item) {
-        ctx.fillStyle = item.color || defaultColor;
-        ctx.fill(); // 以填充方式绘制 默认黑色
+        // ctx.fillStyle = item.color || defaultColor;
+        // ctx.fill(); // 以填充方式绘制 默认黑色
         ctx.stroke(); // 闭合形状并且以填充方式绘制出来
 
         return ctx;

@@ -5513,6 +5513,8 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         ctx.lineTo(-7, 20);
         ctx.lineTo(-7, -10);
         ctx.lineTo(0, -20);
+        ctx.fillStyle = item.color || defaultColor;
+        ctx.fill();
       },
       running(item) {
         this.base(item);
@@ -5539,8 +5541,6 @@ class CanvasShip extends L.Canvas.CustomCanvas {
         return ctx;
       },
       end(item) {
-        ctx.fillStyle = item.color || defaultColor;
-        ctx.fill();
         ctx.stroke();
         return ctx;
       }
