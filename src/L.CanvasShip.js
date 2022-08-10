@@ -245,32 +245,7 @@ class CanvasShip extends L.Canvas.CustomCanvas {
  * @param {Array} options.latlngs 经纬度数组 [{lat : 纬度, lng:经度, deg : 旋转角度 , color : 图标颜色}]
  * @param {Number | String} options.latlngs.deg 旋转角度 0-360
  * @param {String} options.latlngs.type base 基础形状 running 航行中 turn 转向 lost 信号延迟 > 6h storage 浮式存储
- * @param {Object} options.events 要注册的事件 example : {click( point , sourceObj ){ xxx }}； point 代表鼠标坐标在 图标内时的 鼠标坐标 * 2 sourceObj 选中的对象的初始对象
- * @return 创建的实例对象，将会是一个单例当重复创建时只会覆盖参数而不创建新的实例(暂未实现)
- */
-// L.canvas.CanvasShip = (options) => {
-// const { _instance } = CanvasShip
-// let result
-// if (_instance) {
-//   console.warn(
-//     '当前页面已存在一个 Leaflet CanvasShip 画布，将覆盖 Leaflet CanvasShip 画布参数'
-//   )
-//   result = _instance
-//   L.setOptions(_instance, options)
-// }
-
-// if (!_instance) result = new CanvasShip(options)
-//   const result = new CanvasShip(options);
-//   return result;
-// };
-
-
-/**
- * 船位、 航线、 航迹、 时间点 Canvas 绘制
- * @param {Object} options 初始化选项
- * @param {Array} options.latlngs 经纬度数组 [{lat : 纬度, lng:经度, deg : 旋转角度 , color : 图标颜色}]
- * @param {Number | String} options.latlngs.deg 旋转角度 0-360
- * @param {String} options.latlngs.type base 基础形状 running 航行中 turn 转向 lost 信号延迟 > 6h storage 浮式存储
+ * @param {String} options.latlngs.color 船舶图标颜色
  * @param {Object} options.events 要注册的事件 example : {click( point , sourceObj ){ xxx }}； point 代表鼠标坐标在 图标内时的 鼠标坐标 * 2 sourceObj 选中的对象的初始对象
  * @return 创建的实例对象，将会是一个单例当重复创建时只会覆盖参数而不创建新的实例(暂未实现)
  */
